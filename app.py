@@ -14,10 +14,11 @@ def init_db():
     con=get_db_connection()
     con.execute('''
         CREATE TABLE IF NOT EXISTS tasks (
-            name TEXT primary key,
-            title TEXT NOT NULL,
-            description TEXT,
-            status TEXT DEFAULT 'Incomplete'
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    title TEXT NOT NULL,
+    description TEXT,
+    status TEXT DEFAULT 'Incomplete'
         )
     ''')
     con.commit()
@@ -26,7 +27,7 @@ init_db()
 
 @app.route('/api/tasks',methods=['GET'])
 def get_tasks():
-    con=get_db_connection
+    con=get_db_connection()
     tasks=con.execute('Select * from tasks').fetchall()
     con.close()
     return([dict(task) for task in tasks])
@@ -41,9 +42,9 @@ def create_task():
     if not name or not title:
         return({"error":'Name and Title are required'}), 400
 
-    con=get_db_connection
+    con=get_db_connection()
     cur=con.cursor()
-    cur.execute('insert intp tasks(name,title,description) values(?,?,?)',(name,title,description))
+    cur.execute('INSERT INTO tasks (name,title,description) VALUES (?,?,?)',(name,title,description))
     con.commit()
     new_id=cur.lastrowid
     con.close()
@@ -59,7 +60,7 @@ def create_task():
 def update_task(task_id):
     data=request.get_json()
     status=data.get('status','Completed')
-    con=get_db_connection
+    con=get_db_connection()
     con.execute('UPDATE tasks SET status = ? WHERE id = ?',(status,task_id))
     con.commit()
     con.close()
@@ -68,7 +69,7 @@ def update_task(task_id):
 
 @app.route('/api/tasks/<int:task_id>', methods=['DELETE'])
 def delete_task():
-    con=get_db_connection
+    con=get_db_connection()
     con.execute('DELETE FROM tasks WHERE id = ?', (task_id,))
     con.commit()
     con.close()
