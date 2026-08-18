@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Task Manager</title>
+  <link rel="stylesheet" href="styles11/header.css">
+  <link rel="stylesheet" href="styles11/body.css">
+</head>
+
+<body>
+
+  <!-- Header -->
+  <header class="Header">
+    <div class="left">
+      <img class="hamburger" src="icons/Main-menu-logo.svg" alt="Menu">
+    </div>
+    <div class="middle">
+      <input class="searchbar" id="search-input" type="text" placeholder="Search tasks...">
+      <img class="microphone" src="icons/voice-search-icon.svg" alt="Voice Search">
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="action-buttons-container">
+      <button type="button" id="create-btn" class="btn btn-create">
+        <span class="icon">+</span>
+        <span>Create</span>
+      </button>
+
+      <button type="button" id="edit-btn" class="btn btn-edit" disabled>
+        <span class="icon">✏️</span>
+        <span>Edit</span>
+      </button>
+
+      <button type="button" id="delete-btn" class="btn btn-delete" disabled>
+        <span class="icon">🗑️</span>
+        <span>Delete</span>
+      </button>
+    </div>
+
+    <!-- Task List -->
+    <div id="task-list" class="task-list"></div>
+  </main>
+
+  <!-- Create Modal -->
+  <div id="create-modal" class="modal-overlay">
+    <div class="modal-box">
+      <h3>Create Task</h3>
+      <form id="task-form">
+        <div class="field-group">
+          <label for="task-title">Heading:</label>
+          <input type="text" id="task-title" required placeholder="Enter heading...">
+        </div>
+
+        <div class="field-group">
+          <label for="task-assigned">Assigned To:</label>
+          <input type="text" id="task-assigned" placeholder="Enter person's name...">
+        </div>
+
+        <div class="field-group">
+          <label for="task-status">Status:</label>
+          <select id="task-status">
+            <option value="Pending">Pending</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Completed">Completed</option>
+          </select>
+        </div>
+
+        <div class="field-group">
+          <label for="task-desc">Description:</label>
+          <textarea id="task-desc" rows="3" placeholder="Enter description..."></textarea>
+        </div>
+
+        <div class="modal-buttons">
+          <button type="button" id="cancel-btn" class="btn-cancel">Cancel</button>
+          <button type="submit" class="btn-submit">Add Task</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit Modal -->
+  <div id="edit-modal" class="modal-overlay">
+    <div class="modal-box">
+      <h3>Edit Task</h3>
+      <form id="edit-form">
+        <div class="field-group">
+          <label for="edit-title">Heading:</label>
+          <input type="text" id="edit-title" required>
+        </div>
+
+        <div class="field-group">
+          <label for="edit-assigned">Assigned To:</label>
+          <input type="text" id="edit-assigned">
+        </div>
+
+        <div class="field-group">
+          <label for="edit-status">Status:</label>
+          <select id="edit-status">
+            <option value="Pending">Pending</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Completed">Completed</option>
+          </select>
+        </div>
+
+        <div class="field-group">
+          <label for="edit-desc">Description:</label>
+          <textarea id="edit-desc" rows="3"></textarea>
+        </div>
+
+        <div class="modal-buttons">
+          <button type="button" id="edit-cancel-btn" class="btn-cancel">Cancel</button>
+          <button type="submit" class="btn-submit">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script src="script.js"></script>
+</body>
+</html>
