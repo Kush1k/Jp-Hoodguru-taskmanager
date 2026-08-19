@@ -1,7 +1,5 @@
-let tasks = [
-  { id: 1, title: "Design homepage", assigned: "Sam", status: "In Progress", desc: "Rework hero section" },
-  { id: 2, title: "Fix login bug", assigned: "Priya", status: "Pending", desc: "Session expires too early" }
-];
+let tasks = [];
+const API_URL = 'http://127.0.0.1:5000/api/tasks';
 let selectedId = null;
 
 const taskList = document.getElementById('task-list');
@@ -9,6 +7,31 @@ const editBtn = document.getElementById('edit-btn');
 const deleteBtn = document.getElementById('delete-btn');
 const createModal = document.getElementById('create-modal');
 const editModal = document.getElementById('edit-modal');
+
+async function loadTasks() {
+  try {
+    const response = await fetch(API_URL);
+
+    if (!response.ok) {
+      throw new Error('Could not load tasks');
+    }
+
+    const apiTasks = await response.json();
+
+    tasks = apiTasks.map(task => ({
+      id: task.id,
+      title: task.title,
+      assigned: task.name,
+      status: task.status,
+      desc: task.description
+    }));
+
+    render();
+  } catch (error) {
+    console.error(error);
+    taskList.innerHTML = '<p>Unable to load tasks. Is Flask running?</p>';
+  }
+}
 
 function render() {
   taskList.innerHTML = '';
@@ -67,4 +90,4 @@ deleteBtn.onclick = () => {
   render();
 };
 
-render();
+loadTasks();
