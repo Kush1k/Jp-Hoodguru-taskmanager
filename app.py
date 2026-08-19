@@ -39,12 +39,13 @@ def create_task():
     name=data.get('name')
     title=data.get('title')
     description=data.get('description','')
+    status=data.get('status','Pending')
     if not name or not title:
         return({"error":'Name and Title are required'}), 400
 
     con=get_db_connection()
     cur=con.cursor()
-    cur.execute('INSERT INTO tasks (name,title,description) VALUES (?,?,?)',(name,title,description))
+    cur.execute('INSERT INTO tasks (name,title,description,status) VALUES (?,?,?,?)',(name,title,description,status))
     con.commit()
     new_id=cur.lastrowid
     con.close()
@@ -53,7 +54,7 @@ def create_task():
         'name': name, 
         'title': title, 
         'description': description, 
-        'status': 'Incomplete'
+        'status': status
     }), 201
 
 @app.route('/api/tasks/<int:task_id>', methods=['PUT'])
