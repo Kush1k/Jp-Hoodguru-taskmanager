@@ -9,7 +9,9 @@ app=Flask(__name__)
 CORS(app, supports_credentials=True)
 app.config['SECRET_KEY'] = os.environ.get('TASK_MANAGER_SECRET', 'local-development-secret-change-me')
 base_dir=os.path.dirname(os.path.abspath(__file__))
-db_path=os.path.join(base_dir,'database.db')
+data_dir=os.environ.get('TASK_MANAGER_DATA_DIR', base_dir)
+os.makedirs(data_dir, exist_ok=True)
+db_path=os.path.join(data_dir,'database.db')
 VALID_STATUSES = {'Pending', 'In Progress', 'Completed'}
 
 def get_db_connection():
