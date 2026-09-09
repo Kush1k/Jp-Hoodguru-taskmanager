@@ -2,60 +2,40 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Task Manager</title>
+  <title>Orbit | Task manager</title>
   <link rel="stylesheet" href="styles11/header.css">
   <link rel="stylesheet" href="styles11/body.css">
 </head>
 
 <body>
-
-  <!-- Header -->
-  <header class="Header">
-    <div class="left">
-      <img class="hamburger" src="icons/Main-menu-logo.svg" alt="Menu">
-    </div>
-    <div class="middle">
-      <input class="searchbar" id="search-input" type="text" placeholder="Search tasks...">
-      <img class="microphone" src="icons/voice-search-icon.svg" alt="Voice Search">
-    </div>
-  </header>
-
-  <!-- Main Content -->
-  <main class="main-content">
-    <div class="action-buttons-container">
-      <button type="button" id="create-btn" class="btn btn-create">
-        <span class="icon">+</span>
-        <span>Create</span>
-      </button>
-
-      <button type="button" id="edit-btn" class="btn btn-edit" disabled>
-        <span class="icon">✏️</span>
-        <span>Edit</span>
-      </button>
-
-      <button type="button" id="delete-btn" class="btn btn-delete" disabled>
-        <span class="icon">🗑️</span>
-        <span>Delete</span>
-      </button>
-    </div>
-
-    <!-- Task List -->
-    <div id="task-list" class="task-list"></div>
-  </main>
+  <div id="auth-screen" class="auth-screen">
+    <div class="auth-art" aria-hidden="true"><span></span><span></span><span></span></div>
+    <section class="auth-panel">
+      <div class="brand-mark">O</div><p class="eyebrow">PERSONAL COMMAND CENTER</p>
+      <h1>Make room for<br><em>momentum.</em></h1>
+      <p class="auth-copy">A calm, focused space for the work that moves everything forward.</p>
+      <form id="auth-form"><label for="auth-username">Username</label><input id="auth-username" autocomplete="username" required placeholder="your username"><label for="auth-password">Password</label><input id="auth-password" type="password" autocomplete="current-password" required placeholder="6+ characters"><p id="auth-error" class="form-error"></p><button class="primary-btn" type="submit"><span id="auth-submit-label">Enter workspace</span><span>↗</span></button></form>
+      <button id="toggle-auth" class="text-btn" type="button">New here? Create an ID</button>
+    </section>
+  </div>
+  <div id="app-shell" class="app-shell hidden">
+    <aside class="sidebar"><div class="brand"><div class="brand-mark">O</div><span>orbit</span></div><div class="sidebar-label">WORKSPACE</div><nav><button class="nav-item active" type="button"><span>◈</span> All tasks <b id="nav-count">0</b></button></nav><div class="sidebar-bottom"><div class="status-dot"></div><span id="user-name">User</span><button id="logout-btn" class="logout-btn" title="Log out">↪</button></div></aside>
+    <main class="dashboard"><header class="topbar"><div><p class="eyebrow">TODAY'S FOCUS</p><h2>Good to see you, <span id="welcome-name">there</span>.</h2></div><button id="create-btn" class="primary-btn compact" type="button"><span>+</span> New task</button></header><section class="overview"><div class="stat-card"><span class="stat-icon orange">◷</span><div><strong id="total-count">0</strong><span>Total tasks</span></div></div><div class="stat-card"><span class="stat-icon blue">↗</span><div><strong id="progress-count">0</strong><span>In progress</span></div></div><div class="stat-card"><span class="stat-icon green">✓</span><div><strong id="done-count">0</strong><span>Completed</span></div></div></section><section class="task-section"><div class="section-heading"><div><p class="eyebrow">YOUR QUEUE</p><h3>Tasks</h3></div><div class="toolbar"><div class="search-wrap"><span>⌕</span><input id="search-input" type="search" placeholder="Search tasks..."></div><select id="status-filter" aria-label="Filter tasks"><option value="all">All status</option><option value="Pending">Pending</option><option value="In Progress">In progress</option><option value="Completed">Completed</option></select><button id="edit-btn" class="toolbar-btn" type="button" disabled>Edit</button><button id="delete-btn" class="toolbar-btn danger" type="button" disabled>Delete</button></div></div><div id="task-list" class="task-list"></div></section></main>
+  </div>
 
   <!-- Create Modal -->
   <div id="create-modal" class="modal-overlay">
     <div class="modal-box">
-      <h3>Create Task</h3>
+      <div class="modal-heading"><div><p class="eyebrow">ADD TO QUEUE</p><h3>New tasks</h3></div><button type="button" class="close-btn" data-close="create-modal">×</button></div><p class="hint">Add one task per line for a quick batch capture, or use the fields below for more detail.</p>
       <form id="task-form">
         <div class="field-group">
           <label for="task-title">Heading:</label>
-          <input type="text" id="task-title" required placeholder="Enter heading...">
+          <textarea id="task-title" rows="3" required placeholder="One task per line for batch entry..."></textarea>
         </div>
 
         <div class="field-group">
           <label for="task-assigned">Assigned To:</label>
-          <input type="text" id="task-assigned" placeholder="Enter person's name...">
+          <input type="text" id="task-assigned" placeholder="Optional owner...">
         </div>
 
         <div class="field-group">
@@ -74,7 +54,7 @@
 
         <div class="modal-buttons">
           <button type="button" id="cancel-btn" class="btn-cancel">Cancel</button>
-          <button type="submit" class="btn-submit">Add Task</button>
+          <button type="submit" class="btn-submit">Add task(s) <span>↗</span></button>
         </div>
       </form>
     </div>
@@ -83,7 +63,7 @@
   <!-- Edit Modal -->
   <div id="edit-modal" class="modal-overlay">
     <div class="modal-box">
-      <h3>Edit Task</h3>
+      <div class="modal-heading"><div><p class="eyebrow">REFINE TASK</p><h3>Edit task</h3></div><button type="button" class="close-btn" data-close="edit-modal">×</button></div>
       <form id="edit-form">
         <div class="field-group">
           <label for="edit-title">Heading:</label>
@@ -111,7 +91,7 @@
 
         <div class="modal-buttons">
           <button type="button" id="edit-cancel-btn" class="btn-cancel">Cancel</button>
-          <button type="submit" class="btn-submit">Save Changes</button>
+          <button type="submit" class="btn-submit">Save changes <span>↗</span></button>
         </div>
       </form>
     </div>
