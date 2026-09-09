@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: jp-hoodguru-taskmanager
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - key: TASK_MANAGER_SECRET
+        generateValue: true
+      - key: TASK_MANAGER_DATA_DIR
+        value: /var/data
+    disk:
+      name: task-manager-data
+      mountPath: /var/data
+      sizeGB: 1
